@@ -28,6 +28,14 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    }, 
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow e-magnatitry to access your camera."
+        }
+      ]
+    ]
   }
 }

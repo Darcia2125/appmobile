@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, StyleSheet, TouchableOpacity, Button, Linking, Pressable } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Button, Image, Linking, Pressable } from 'react-native';
 import Modal from 'react-native-modal';
 import Scanner from './Scanner';
 import { BarCodeScanner } from 'expo-barcode-scanner';
@@ -10,6 +10,7 @@ export default function Home(props) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [currentScan, setCurrentScan] = useState(null);
   const [scannedItems, setScannedItems] = useState(new Set());
+  const [srcImg, setSrcImg] = useState(null);
 
   const [colis, setColis] = useState([
     { id: "colis1", label: "1" },
@@ -58,6 +59,7 @@ export default function Home(props) {
         <Modal isVisible={isModalVisible}>
           <View style={{ flex: 1 }}>
             <Scanner
+              setSrcImg={setSrcImg}
               closeModal={() => setModalVisible(false)}
               onScan={(itemId) => {
                 handleScan(itemId);
@@ -74,6 +76,7 @@ export default function Home(props) {
           title="Validez liste colis"
           onPress={() => props.navigation.navigate("Information")}
         />
+        {srcImg && <Image source={{uri:srcImg}} style={{height: 90, width: 100}} /> }
       </View>
     </View>
   );

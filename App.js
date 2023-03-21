@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { CompteContextProvider, CompteContext } from './src/utils/contexte/CompteContext';
 
 import Login from './src/pages/Login';
 import Home from './src/pages/Home';
@@ -17,8 +19,10 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function HomeStack() {
+  const {isLogged, setIsLogged} = useContext(CompteContext);
   return (
     <Tab.Navigator
+      initialRouteName='Home'
       screenOptions={{
         tabBarPosition: 'bottom',
         tabBarStyle: { backgroundColor: 'white' },
@@ -71,7 +75,10 @@ function HomeStack() {
           tabPress: (event) => {
             event.preventDefault();
             AsyncStorage.removeItem('token');
-            navigation.navigate('Login');
+            setIsLogged(false);
+            setTimeout(() => {
+              navigation.navigate('Login');
+            }, 500)
           },
         })}
         options={{
@@ -86,32 +93,7 @@ function HomeStack() {
 }
 
 function MainTabScreen() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Home"
-        component={HomeStack}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" color={color} size={size} />
-          ),
-          headerShown: false
-        }}
-      />
-      <Stack.Screen name="Information" component={Information} options={{ headerShown: false }}/>
-      <Stack.Screen name="Course" component={Course} options={{ headerShown: false }}/>
-      <Stack.Screen name="Colis" component={Colis} options={{ headerShown: false }}/>
-      <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{ headerShown: false }}
-          />
-    </Stack.Navigator>
-  );
-}
-
-export default function App() {
-  const [isLogged, setIsLogged] = useState(false);
+  const {isLogged, setIsLogged} = useContext(CompteContext);
 
   useEffect(() => {
     const checkLogin = async () => {
@@ -123,24 +105,47 @@ export default function App() {
 
     checkLogin();
   }, []);
-
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {isLogged ? (
-          <Stack.Screen
-            name="MainTabScreen"
-            component={MainTabScreen}
-            options={{ headerShown: false }}
-          />
-        ) : (
-          <Stack.Screen
+  console.log('isLogged : ', isLogged);
+  return isLogged ? (
+    <Stack.Navigator initialRouteName='Accueil'>
+      <Stack.Screen
+        name="Accueil"
+        component={HomeStack}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home" color={color} size={size} />
+          ),
+          headerShown: false
+        }}
+      />
+      <Stack.Screen name="Information" component={Information} options={{ headerShown: false }}/>
+      <Stack.Screen name="Course" component={Course} options={{ headerShown: false }}/>
+      <Stack.Screen name="Colis" component={Colis} options={{ headerShown: false }}/>
+    </Stack.Navigator>
+  ) : (
+    <Stack.Navigator initialRouteName='Login'>
+      <Stack.Screen
             name="Login"
             component={Login}
             options={{ headerShown: false }}
-          />
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+      />
+    </Stack.Navigator>
+  );
+}
+
+
+
+
+/*APP component ===> principale*/
+export default function App() {
+
+  return (
+    <CompteContextProvider>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <MainTabScreen />
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </CompteContextProvider>
   );
 }

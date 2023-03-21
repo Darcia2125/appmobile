@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, StyleSheet, TouchableOpacity, Button, Linking } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Button, Linking, ToastAndroid } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { Camera, CameraType } from "expo-camera";
 
 export default function Scanner(props) {
   const [hasPermission, setHasPermission] = useState(null);
+  const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [camera, setCamera] =useState(null);
   const [scanned, setScanned] = useState(false);
 
   useEffect(() => {
@@ -14,10 +17,22 @@ export default function Scanner(props) {
     })();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+
+  const takePicture = async () => {
+    if(camera){
+      const data = await camera.takePictureAsync();
+      props.setSrcImg(data.uri)
+      props.closeModal();
+    }
+  }
+
+  const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    props.closeModal();
+    console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
+    ToastAndroid.show("Produit scanné et va être ensuite photographié", ToastAndroid.LONG);
+    setTimeout(() => {
+     takePicture();
+    }, 4000)
   };
 
   const handleCancelScan = () => {
@@ -32,20 +47,26 @@ export default function Scanner(props) {
   }
 
   return (
-    <View style={styles.container}>
-      <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
-      />
-      <View style={styles.cancelButtonContainer}>
-      <Button
-          id="annuler"
-          title="Annuler le scan"
-          onPress={handleCancelScan}
-        />
+      <View style={styles.container}>
+          {/*<BarCodeScanner
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            style={StyleSheet.absoluteFillObject}
+    />*/}
+          <Camera ref={ref => setCamera(ref)} 
+            barCodeScannerSettings={{
+              barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr]
+            }}
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            style={[StyleSheet.absoluteFillObject, {flex: 1, aspectRatio: 1}]} type={CameraType.back} ratio={'1:1'} />
+        <View style={styles.cancelButtonContainer}>
+          <Button
+              id="annuler"
+              title="Annuler le scan"
+              onPress={handleCancelScan}
+            />
+        </View>
       </View>
-    </View>
-  );
+  )
 }
 const styles = StyleSheet.create({
   container: {

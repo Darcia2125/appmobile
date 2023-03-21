@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import login  from "../services/ApiLogin";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CompteContext } from '../utils/contexte/CompteContext';
 
 export default function Login(props) {
   const [matricule, setMatricule] = useState("");
@@ -18,13 +19,18 @@ export default function Login(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const {setIsLogged} = useContext(CompteContext);
 
   const handleLogin = async () => {
     setIsLoading(true);
     login(matricule, password).then((response) => {
         AsyncStorage.setItem("token" , response.data.token)
         setIsLoading(false)
-        props.navigation.navigate("Home")
+        setIsLogged(true);
+        //props.navigation.navigate("Accueil")
+        setTimeout(() => {
+          props.navigation.navigate("Accueil");
+        }, 500)
     }).catch((err) => {
       console.log(err)
       setIsLoading(false)
