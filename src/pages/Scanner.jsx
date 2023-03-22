@@ -3,10 +3,12 @@ import { StatusBar } from 'expo-status-bar';
 import { View, Text, StyleSheet, TouchableOpacity, Button, Linking, ToastAndroid } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Camera, CameraType } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
 
 export default function Scanner(props) {
   const [hasPermission, setHasPermission] = useState(null);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
+  //const [permission, requestPermission] = Camera.useCameraPermissions();
+  const  [permissionResponse, requestPermission] =  MediaLibrary.usePermissions();
   const [camera, setCamera] =useState(null);
   const [scanned, setScanned] = useState(false);
 
@@ -17,11 +19,21 @@ export default function Scanner(props) {
     })();
   }, []);
 
+  if(permissionResponse === null){
+    requestPermission();
+  }
 
   const takePicture = async () => {
     if(camera){
       const data = await camera.takePictureAsync();
       props.setSrcImg(data.uri)
+      await MediaLibrary.saveToLibraryAsync(data.uri);
+      if (data.uri) {
+       ToastAndroid.show(
+          `Image télecharger dans la galérie.`,
+          ToastAndroid.SHORT
+       );
+    }
       props.closeModal();
     }
   }
