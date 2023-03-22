@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { FlatList, StyleSheet, View, SafeAreaView, KeyboardAvoidingView, Alert, TouchableOpacity, TextInput, Image, Text, Dimensions } from 'react-native';
 import { Button } from 'react-native-paper';
+import axios from 'axios';
+import ImagePicker from 'react-native-image-picker';
 
 class Message extends Component {
   constructor() {
@@ -13,7 +15,6 @@ class Message extends Component {
         text: `Salut! comment pouvons nous vous aidez?`,
         uID: 'a002',
         userName: 'Hoag Target',
-        chatDate: '2019-9-1 15:14:45'
       }],
       getChatText: ""
     };
@@ -55,6 +56,20 @@ class Message extends Component {
 
     this.setState({
       fbData: this.state.fbData.concat(chatData),
+      getChatText: ""
+    }, () => {
+      setTimeout(() => {
+        const response = {
+          userID: 'efgh1234',
+          text: `Nous sommes un peu saturé pour le moment. Veuillez appeler directement ce numéro : 034 78 666 66 pour avoir une reponse plus rapidement.`,
+          uID: 'a002',
+          userName: 'Hoag Target',
+          chatDate: curDate
+        }
+        this.setState({
+          fbData: this.state.fbData.concat(response)
+        });
+      }, 3000);
     })
   }
 

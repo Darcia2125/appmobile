@@ -29,7 +29,7 @@ export default function Scanner(props) {
   const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
     console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
-    ToastAndroid.show("Produit scanné et va être ensuite photographié", ToastAndroid.LONG);
+    ToastAndroid.show("Produit scanné et va être ensuite photographié, veuillez vous positionner et la photo se fera apres 3s", ToastAndroid.LONG);
     setTimeout(() => {
      takePicture();
     }, 4000)

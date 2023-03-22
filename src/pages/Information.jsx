@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StatusBar, Dimensions } from 'react-native';
 import { View, Text, StyleSheet, TouchableOpacity, Button, Linking, FlatList } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import { DataTable } from 'react-native-paper';
 import Modal from 'react-native-modal';
 import MapView, { Marker } from 'react-native-maps';
+import { Geolocation } from 'react-native';
+import axios from 'axios';
 
 
 const { width } = Dimensions.get('window');
@@ -13,6 +15,8 @@ export default function Information(props) {
     const [agree, setAgree] = useState(false);
     const [ModalVisible, setModalVisible] = useState(false);
     const [selectedCheckboxId, setSelectedCheckboxId] = useState(null);
+    const [selectedItemId, setSelectedItemId] = useState(null);
+    const [currentLocation, setCurrentLocation] = useState(null);
     const [distance, setDistance] = useState(null);
 
     const handleClick = () => {
@@ -52,18 +56,64 @@ export default function Information(props) {
     const from = page * itemsPerPage;
     const to = (page + 1) * itemsPerPage;
 
-    const mapRegion = {
-      latitude: 48.8566,
-      longitude: 2.3522,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-    };
-    const markerPosition = {
-      latitude: 48.8566,
-      longitude: 2.3522,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-    };
+    const data = [
+      {
+        id: 1,
+        name: 'colis 1',
+        address: 'Amboditsiry, Antananarivo, Madagascar',
+        duration: '30 minutes',
+        distance: '8 km',
+        mapRegion: {
+          latitude: -18.886185840729148,
+          longitude: 47.53933759932571,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        },
+        markerPosition: {
+          latitude: -18.886185840729148,
+          longitude: 47.53933759932571,
+        },
+        
+      },
+      
+      
+      {
+        id: 2,
+        name: 'Colis 2',
+        address: 'Analamahitsy, Antananarivo, Madagascar',
+        duration: '30 minutes',
+        distance: '22 km',
+        mapRegion: {
+          latitude: -18.873589682098796,
+          longitude: 47.55017840844612,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        },
+        markerPosition: {
+          latitude: -18.873589682098796,
+          longitude: 47.55017840844612,
+        },        
+      },
+      {
+        id: 3,
+        name: 'Colis 3',
+        address: 'Behoririka, Antananarivo, Madagascar',
+        duration: '30 minutes',
+        distance: '22 km',
+        mapRegion: {
+          latitude: -18.901716392436516,
+          longitude: 47.52956514868231,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        },
+        markerPosition: {
+          latitude: -18.901716392436516,
+          longitude: 47.52956514868231,
+        },
+
+      },
+      // add more objects for each row
+    ];
   return (
     <View style={[styles.container, {flex: 1}]}>
         <View style={styles.tracking}>
@@ -75,76 +125,56 @@ export default function Information(props) {
                 <DataTable.Title ></DataTable.Title>
                 <DataTable.Title ><Text style={styles.title1}>Listes Colis</Text></DataTable.Title>
             </DataTable.Header>
-            <DataTable.Row style={[styles.row, {flexWrap: 'wrap'}]}>
-            <DataTable.Cell style={styles.cell}>
-            <Checkbox
-                value={selectedCheckboxId === 1}
-                onValueChange={() => handleCheckboxChange(1)}
-                color={selectedCheckboxId === 1 ? "#4630EB" : undefined}
-            />
-            </DataTable.Cell>
-            <DataTable.Cell style={styles.cell}>Colis 1</DataTable.Cell>
-            <DataTable.Cell style={styles.cell}><Button title="voir plus" onPress={() => {
-              setModalVisible(true);}}/></DataTable.Cell>
-              <Modal isVisible={ModalVisible}>
-                <View style={{ backgroundColor: "#fff", padding: 20 }}>
-                  <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10 }}>
-                    Détails de la livraison
-                  </Text>
-                  <View style={{ flexDirection: "row", marginBottom: 10 }}>
-                    <Text style={{ fontWeight: "bold", flex: 1 }}>Adresse :</Text>
-                    <Text style={{ flex: 2 }}>123 Rue de la Livraison, 75001 Paris</Text>
-                  </View>
-                  <View style={{ flexDirection: "row", marginBottom: 10 }}>
-                    <Text style={{ fontWeight: "bold", flex: 1 }}>Durée :</Text>
-                    <Text style={{ flex: 2 }}>30 minutes</Text>
-                  </View>
-                  <View style={{ flexDirection: "row", marginBottom: 10 }}>
-                    <Text style={{ fontWeight: "bold", flex: 1 }}>Distance :</Text>
-                    <Text style={{ flex: 2 }}>22 km</Text>
-                  </View>
-                  <View style={{ height: 200 }}>
-                    <MapView
-                      style={{ flex: 1 }}
-                      initialRegion={mapRegion}
-                      showsUserLocation={true}
-                      showsMyLocationButton={true}
-                    >
-                      <Marker coordinate={markerPosition} title="Adresse de la livraison" />
-                    </MapView>
-                  </View>
-                  <View style={{ marginTop: 20 }}>
-                    <Button title="Fermer" onPress={() => setModalVisible(false)} />
-                  </View>
-                </View>
-              </Modal>
 
-        </DataTable.Row>
-
-            <DataTable.Row style={[styles.row, {flexWrap: 'wrap'}]}>
+            {data.map((item) => (
+              <DataTable.Row key={item.id} style={[styles.row, { flexWrap: 'wrap' }]}>
                 <DataTable.Cell style={styles.cell}>
-                <Checkbox
-                    value={selectedCheckboxId === 2}
-                    onValueChange={() => handleCheckboxChange(2)}
-                    color={selectedCheckboxId === 2 ? "#4630EB" : undefined}
-                />
+                  <Checkbox
+                    value={selectedCheckboxId === item.id}
+                    onValueChange={() => handleCheckboxChange(item.id)}
+                    color={selectedCheckboxId === item.id ? '#4630EB' : undefined}
+                  />
                 </DataTable.Cell>
-                <DataTable.Cell style={styles.cell}>Colis 2</DataTable.Cell>
-                <DataTable.Cell style={styles.cell}><Button title="voir plus"/></DataTable.Cell>
-            </DataTable.Row>
-
-
-            <DataTable.Row style={[styles.row, {flexWrap: 'wrap'}]}>
+                <DataTable.Cell style={styles.cell}>{item.name}</DataTable.Cell>
                 <DataTable.Cell style={styles.cell}>
-                <Checkbox
-                    value={selectedCheckboxId === 3}
-                    onValueChange={() => handleCheckboxChange(3)}
-                    color={selectedCheckboxId === 3 ? "#4630EB" : undefined}
-                />
+                  <Button title="voir plus" onPress={() => setSelectedItemId(item.id)} />
                 </DataTable.Cell>
-                <DataTable.Cell style={styles.cell}>Colis 5</DataTable.Cell>
-                <DataTable.Cell style={styles.cell}><Button title="voir plus"/></DataTable.Cell>
-            </DataTable.Row>
+                <Modal isVisible={selectedItemId === item.id}>
+                  <View style={{ backgroundColor: '#fff', padding: 20 }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>
+                      Détails de la livraison
+                    </Text>
+                    <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                      <Text style={{ fontWeight: 'bold', flex: 1 }}>Adresse :</Text>
+                      <Text style={{ flex: 2 }}>{item.address}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                      <Text style={{ fontWeight: 'bold', flex: 1 }}>Durée :</Text>
+                      <Text style={{ flex: 2 }}>{item.duration}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                      <Text style={{ fontWeight: 'bold', flex: 1 }}>Distance :</Text>
+                      <Text style={{ flex: 2 }}>{item.distance}</Text>
+                    </View>
+                    <View style={{ height: 200 }}>
+                      <MapView
+                        style={{ flex: 1 }}
+                        initialRegion={item.mapRegion}
+                        showsUserLocation={true}
+                        showsMyLocationButton={true}
+                      >
+                        <Marker coordinate={item.markerPosition} title="Adresse de la livraison" />
+                      </MapView>
+                    </View>
+                    <View style={{ marginTop: 20 }}>
+                      <Button title="Fermer" onPress={() => setSelectedItemId(null)} />
+                    </View>
+                  </View>
+                </Modal>
+
+              </DataTable.Row>
+            ))}
+           
             <DataTable.Pagination
             page={page}
             numberOfPages={Math.floor(items.length / itemsPerPage)}
@@ -155,7 +185,7 @@ export default function Information(props) {
 
         <View style={[{ width: "50%", marginLeft: 90, marginTop: 20 }]}>
         <Button
-            title={`Validez votre course ${selectedCheckboxId}`}
+            title={`Validez votre course 1 pour le colis ${selectedCheckboxId}`}
             disabled={selectedCheckboxId === null}
             onPress={() =>
                 props.navigation.navigate("Course", { courseId: selectedCheckboxId })
