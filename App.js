@@ -105,7 +105,7 @@ function MainTabScreen() {
 
     checkLogin();
   }, []);
-  console.log('isLogged : ', isLogged);
+  
   return isLogged ? (
     <Stack.Navigator initialRouteName='Accueil'>
       <Stack.Screen

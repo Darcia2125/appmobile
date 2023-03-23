@@ -12,6 +12,7 @@ export default function Scanner(props) {
   const [camera, setCamera] =useState(null);
   const [scanned, setScanned] = useState(false);
 
+
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -26,13 +27,13 @@ export default function Scanner(props) {
   const takePicture = async () => {
     if(camera){
       const data = await camera.takePictureAsync();
-      props.setSrcImg(data.uri)
       await MediaLibrary.saveToLibraryAsync(data.uri);
       if (data.uri) {
        ToastAndroid.show(
           `Image télecharger dans la galérie.`,
           ToastAndroid.SHORT
        );
+       props.handleScan(props.idColis);
     }
       props.closeModal();
     }
