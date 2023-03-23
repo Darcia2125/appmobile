@@ -9,8 +9,7 @@ import getColis from '../services/ApiColis';
 export default function Home(props) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [currentScan, setCurrentScan] = useState(null);
-  const [scannedItems, setScannedItems] = useState(new Set());
-  const [srcImg, setSrcImg] = useState(null);
+  const [scannedItems, setScannedItems] = useState([]);
 
   const [colis, setColis] = useState([
     { id: "colis1", label: "1" },
@@ -18,21 +17,17 @@ export default function Home(props) {
     { id: "colis3", label: "3" }
   ]);
 
-  // Fonction pour vérifier si tous les colis ont été scannés
-  function allItemsScanned() {
-    return colis.every((item) => scannedItems.has(item.id));
-  }
-
-  useEffect(() => {
-    if (allItemsScanned()) {
-      setModalVisible(false); // Fermer automatiquement la fenêtre modale de scan
-    }
-  }, [scannedItems]);
 
 
   function handleScan(itemId) {
     // Ajouter l'ID de l'article scanné à l'ensemble des articles scannés
-    setScannedItems(new Set(scannedItems).add(itemId));
+    let copyColisScanned = [...scannedItems];
+    if(copyColisScanned.includes(itemId)) {
+      return;
+    }else{
+      copyColisScanned.push(itemId);
+    }
+    return setScannedItems(copyColisScanned);
   }
   return (
     <View style={styles.container}>
@@ -41,10 +36,15 @@ export default function Home(props) {
         {colis.map(({ id, label }) => (
           <View key={id} style={styles.item}>
             <View style={styles.itemLeft}>
-              <View style={[styles.square, scannedItems.has(id) && styles.squareScanned]}></View>
-              <Text style={[styles.itemText, scannedItems.has(id) && styles.itemTextBold]}>colis: {label}</Text>
+              <View style={[styles.square, scannedItems.includes(id) && styles.squareScanned]}></View>
+              <Text style={[styles.itemText, scannedItems.includes(id) && styles.itemTextBold]}>colis: {label}</Text>
             </View>
-            <Pressable
+            { scannedItems.includes(id) ? (
+              <Text style={styles.scanner}>
+                Colis { label } scanné
+              </Text>
+            ) : (
+              <Pressable
               style={styles.button}
               onPress={() => {
                 setModalVisible(true);
@@ -55,17 +55,18 @@ export default function Home(props) {
                 {isModalVisible && currentScan === id ? "Scanning..." : `Scan colis ${label}`}
               </Text>
             </Pressable>
+            )
+
+            }
+            
           </View>
         ))}
         <Modal isVisible={isModalVisible}>
           <View style={{ flex: 1 }}>
             <Scanner
-              setSrcImg={setSrcImg}
               closeModal={() => setModalVisible(false)}
-              onScan={(itemId) => {
-                handleScan(itemId);
-                setCurrentScan(null);
-              }}
+              handleScan={handleScan}
+              idColis={currentScan}
             />
           </View>
         </Modal>
@@ -73,7 +74,7 @@ export default function Home(props) {
       <View style={[{ width: "50%", marginLeft: 90 }]}>
         <Button
           id="valider"
-          disabled={!allItemsScanned()}
+          disabled={!(scannedItems.length === colis.length)}
           title="Validez liste colis"
           onPress={() => props.navigation.navigate("Information")}
         />
@@ -92,6 +93,18 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: 'blue',
   },
+  scanner: {
+    textAlign: 'center',
+    paddingVertical: 8,
+    backgroundColor: 'green',
+    width: 120,
+    borderRadius: 4,
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },  
   text: {
     fontSize: 16,
     lineHeight: 21,
@@ -137,6 +150,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginRight: 15,
   },
+  squareScanned: {
+    width: 24,
+    height: 24,
+    backgroundColor: 'green',
+    opacity: 0.4,
+    borderRadius: 5,
+    marginRight: 15,
+  },
   itemText: {
     maxWidth: '80%',
   },
@@ -151,6 +172,7 @@ const styles = StyleSheet.create({
     width: 6,
   },
   itemTextBold: {
-    color: "#55BCF6"
+    color: "green",
+    fontWeight: "bold",
   }
 });
