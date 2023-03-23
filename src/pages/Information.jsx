@@ -55,6 +55,8 @@ export default function Information(props) {
     const [page, setPage] = React.useState(0);
     const from = page * itemsPerPage;
     const to = (page + 1) * itemsPerPage;
+    
+    
 
     const data = [
       {

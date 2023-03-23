@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { FlatList, StyleSheet, View, SafeAreaView, KeyboardAvoidingView, Alert, TouchableOpacity, TextInput, Image, Text, Dimensions } from 'react-native';
 import { Button } from 'react-native-paper';
 import axios from 'axios';
-import ImagePicker from 'react-native-image-picker';
 
 class Message extends Component {
   constructor() {
@@ -16,7 +15,7 @@ class Message extends Component {
         uID: 'a002',
         userName: 'Hoag Target',
       }],
-      getChatText: ""
+      getChatText: "",
     };
   }
 
@@ -34,8 +33,9 @@ class Message extends Component {
           text: 'OK', onPress: () => { }
         },],
         { cancelable: false },
-      );
+      ); 
     }
+
 
     const tempDate = new Date();
     let curDate = `${tempDate.getFullYear()}-${tempDate.getMonth() + 1}-${tempDate.getDate()} ${tempDate.getHours()}:${tempDate.getMinutes()}:${tempDate.getSeconds()}`;
@@ -137,6 +137,7 @@ class Message extends Component {
                 onChangeText={(getChatText) => this.setState({ getChatText })}
                 value={this.state.getChatText}
                 placeholder={'Entrez votre message ici!'}></TextInput>
+                
               <TouchableOpacity onPress={() => { this._sendMsg() }} title ='ok' style={{backgroundColor:'yellow', width: 70,height: 30, marginRight:10, borderRadius:4}} >
                 <Text style={{color:'blue', marginLeft: 12, marginTop:5, fontWeight:'bold'}}>Envoyer</Text>
               </TouchableOpacity>
