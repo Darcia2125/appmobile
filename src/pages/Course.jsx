@@ -1,44 +1,42 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, StyleSheet, TouchableOpacity, Button, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ToastAndroid, Button, Image } from 'react-native';
 import { Camera } from 'expo-camera';
-import * as ImagePicker from 'expo-image-picker';
+import * as MediaLibrary from "expo-media-library";
 
 export default function Course(props) {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
+  const  [permissionResponse, requestPermission] =  MediaLibrary.usePermissions();
   const [camera, setCamera] = useState(null);
-  const [image, setImage] = useState(null);
+  const [imagePick, setImagePick] = useState([])
 
   const [type, setType] = useState(Camera.Constants.Type.back);
   useEffect(() => {
       (async () => {
         const  cameraStatus  = await Camera.requestCameraPermissionsAsync();
         setHasCameraPermission(cameraStatus.status === 'granted');
-        const  galleryStatus  = await   ImagePicker.requestMediaLibraryPermissionsAsync();
-        setHasGalleryPermission(galleryStatus.status === 'granted');
   })();
     }, []);
+  
   const takePicture = async () => {
       if(camera){
-        const data = await camera.takePictureAsync(null);
-        //console.log(data.uri)
-        setImage(data.uri)
-        alert('Photo prise avec succès !');
+        const data = await camera.takePictureAsync();
+        await MediaLibrary.saveToLibraryAsync(data.uri);
+        if (data.uri) {
+            ToastAndroid.show(
+              `Image enregistrer dans la galérie.`,
+              ToastAndroid.SHORT
+            );
+        }
+        setImagePick([...imagePick, 1]);
       }
-    }
-  const pickImage = async () => {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Image,
-        allowsEditing: true,
-        aspect: [1, 1],
-        quality: 1,
-  });
-  console.log(result);
-  if (!result.cancelled) {
-        setImage(result.uri);
-      }
-  };
+  }
+
+  if(permissionResponse === null){
+    requestPermission();
+  }
+
   if (hasCameraPermission === null || hasGalleryPermission === false) {
       return <View />;
   }
@@ -70,6 +68,7 @@ export default function Course(props) {
                   mode="contained"
                   icon="camera"
                   onPress={() => takePicture()}
+                  disabled={imagePick[0] === 1}
                 />
                   
               </View>
@@ -79,6 +78,7 @@ export default function Course(props) {
                   mode="contained"
                   icon="map-marker"
                   onPress={() => takePicture()}
+                  disabled={imagePick[1] === 1}
                 />
               </View>
             </View>
@@ -87,8 +87,11 @@ export default function Course(props) {
             <Button
                 mode="contained"
                 title="Validez fin Course 1"
-                onPress={() =>
-                props.navigation.navigate("Colis")}
+                onPress={() => {
+                  props.navigation.navigate("Colis");
+                  setImagePick([]);
+                }}
+                disabled={!(imagePick[0] === 1 && imagePick[1] === 1)} 
             />
             </View>
         </View>
