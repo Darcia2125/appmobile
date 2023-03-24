@@ -17,8 +17,6 @@ export default function Home(props) {
     { id: "colis3", label: "3" }
   ]);
 
-
-
   function handleScan(itemId) {
     // Ajouter l'ID de l'article scanné à l'ensemble des articles scannés
     let copyColisScanned = [...scannedItems];
