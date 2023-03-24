@@ -76,7 +76,10 @@ export default function Home(props) {
           id="valider"
           disabled={!(scannedItems.length === colis.length)}
           title="Validez liste colis"
-          onPress={() => props.navigation.navigate("Information")}
+          onPress={() =>{ 
+            props.navigation.navigate("Information");
+            //setScannedItems([]); //à activer pour renouvéler le state si toute l'action sont faite.
+          }}
         />
       </View>
     </View>
