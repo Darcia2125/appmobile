@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { View, Text, StyleSheet, TouchableOpacity, Button, Linking, Pressable } from 'react-native';
 
 export default function Home(props) {
-  const {title = 'Colis 1 livré' } = props;
+  const { livrerId } = props.route.params;
 
   return (
     <View style={styles.container}>
@@ -13,12 +13,12 @@ export default function Home(props) {
                 <View style={styles.itemLeft}>
                     <View style={styles.square}/>
                     <TouchableOpacity style={styles.itemText}>
-                        <Text style={{fontWeight:"bold"}}>Colis 1</Text>
+                        <Text style={{fontWeight:"bold"}}>Colis {livrerId}</Text>
                     </TouchableOpacity>
                 </View>
                 <View>
                 <Pressable style={styles.button}>
-                  <Text style={styles.text}>{title}</Text>
+                  <Text style={styles.text}>colis {livrerId} livré</Text>
                 </Pressable>
                 </View>
             </View>
@@ -27,7 +27,7 @@ export default function Home(props) {
             <Button
             title="Validez fin livraisons"
             onPress={() =>
-                props.navigation.navigate("Information")}
+                props.navigation.navigate("Information", {infoId: id})}
             />
         </View>
     </View>

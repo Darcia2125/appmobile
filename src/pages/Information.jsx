@@ -7,11 +7,13 @@ import Modal from 'react-native-modal';
 import MapView, { Marker } from 'react-native-maps';
 import { Geolocation } from 'react-native';
 import axios from 'axios';
+import data from './data';
 
 
 const { width } = Dimensions.get('window');
 
 export default function Information(props) {
+    const { infoId } = props.route.params;
     const [agree, setAgree] = useState(false);
     const [ModalVisible, setModalVisible] = useState(false);
     const [selectedCheckboxId, setSelectedCheckboxId] = useState(null);
@@ -27,9 +29,14 @@ export default function Information(props) {
       setModalVisible(false);
     };
 
+    const clearSelectedItemId = () => {
+      setSelectedItemId(null);
+    };
+
     const handleCheckboxChange = (id) => {
       if (id === selectedCheckboxId) {
           setSelectedCheckboxId(null);
+          clearSelectedItemId();
       } else {
           setSelectedCheckboxId(id);
       }
@@ -58,70 +65,13 @@ export default function Information(props) {
     
     
 
-    const data = [
-      {
-        id: 1,
-        name: 'colis 1',
-        address: 'Amboditsiry, Antananarivo, Madagascar',
-        duration: '30 minutes',
-        distance: '8 km',
-        mapRegion: {
-          latitude: -18.886185840729148,
-          longitude: 47.53933759932571,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        },
-        markerPosition: {
-          latitude: -18.886185840729148,
-          longitude: 47.53933759932571,
-        },
-        
-      },
-      
-      
-      {
-        id: 2,
-        name: 'Colis 2',
-        address: 'Analamahitsy, Antananarivo, Madagascar',
-        duration: '30 minutes',
-        distance: '22 km',
-        mapRegion: {
-          latitude: -18.873589682098796,
-          longitude: 47.55017840844612,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        },
-        markerPosition: {
-          latitude: -18.873589682098796,
-          longitude: 47.55017840844612,
-        },        
-      },
-      {
-        id: 3,
-        name: 'Colis 3',
-        address: 'Behoririka, Antananarivo, Madagascar',
-        duration: '30 minutes',
-        distance: '22 km',
-        mapRegion: {
-          latitude: -18.901716392436516,
-          longitude: 47.52956514868231,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        },
-        markerPosition: {
-          latitude: -18.901716392436516,
-          longitude: 47.52956514868231,
-        },
-
-      },
-      // add more objects for each row
-    ];
+    
   return (
     <View style={[styles.container, {flex: 1}]}>
         <View style={styles.tracking}>
-            <Text style={styles.title}>Choix possible pour la course 1</Text>
+            <Text style={styles.title}>Choix possible pour la course</Text>
         </View>
-
+        
         <DataTable style={[styles.table, { width: width - 10, marginLeft:"1.5%" }]}>
             <DataTable.Header style={[styles.head, {flexWrap: 'wrap'}]}>
                 <DataTable.Title ></DataTable.Title>
@@ -129,7 +79,7 @@ export default function Information(props) {
             </DataTable.Header>
 
             {data.map((item) => (
-              <DataTable.Row key={item.id} style={[styles.row, { flexWrap: 'wrap' }]}>
+              <DataTable.Row key={item.infoId} style={[styles.row, { flexWrap: 'wrap' }]}>
                 <DataTable.Cell style={styles.cell}>
                   <Checkbox
                     value={selectedCheckboxId === item.id}
@@ -184,8 +134,7 @@ export default function Information(props) {
             label={`${from + 1}`}
           />
         </DataTable>
-
-        <View style={[{ width: "50%", marginLeft: 90, marginTop: 20 }]}>
+    <View style={[{ width: "50%", marginLeft: 90, marginTop: 20 }]}>
         <Button
             title={`Validez votre course 1 pour le colis ${selectedCheckboxId}`}
             disabled={selectedCheckboxId === null}
@@ -240,4 +189,5 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20
   },
+  
 });

@@ -5,17 +5,14 @@ import Modal from 'react-native-modal';
 import Scanner from './Scanner';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import getColis from '../services/ApiColis';
+import data from './data';
 
 export default function Home(props) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [currentScan, setCurrentScan] = useState(null);
   const [scannedItems, setScannedItems] = useState([]);
-
-  const [colis, setColis] = useState([
-    { id: "colis1", label: "1" },
-    { id: "colis2", label: "2" },
-    { id: "colis3", label: "3" }
-  ]);
+  const [scannedItemIds, setScannedItemIds] = useState([]); 
+  
 
   function handleScan(itemId) {
     // Ajouter l'ID de l'article scanné à l'ensemble des articles scannés
@@ -31,26 +28,26 @@ export default function Home(props) {
     <View style={styles.container}>
       <View style={styles.tracking}>
         <Text style={styles.title}>Liste de livraison à faire</Text>
-        {colis.map(({ id, label }) => (
-          <View key={id} style={styles.item}>
+        {data.map((item) => (
+          <View key={item.id} style={styles.item}>
             <View style={styles.itemLeft}>
-              <View style={[styles.square, scannedItems.includes(id) && styles.squareScanned]}></View>
-              <Text style={[styles.itemText, scannedItems.includes(id) && styles.itemTextBold]}>colis: {label}</Text>
+              <View style={[styles.square, scannedItems.includes(item.id) && styles.squareScanned]}></View>
+              <Text style={[styles.itemText, scannedItems.includes(item.id) && styles.itemTextBold]}>colis: {item.id}</Text>
             </View>
-            { scannedItems.includes(id) ? (
+            { scannedItems.includes(item.id) ? (
               <Text style={styles.scanner}>
-                Colis { label } scanné
+                Colis { item.id } scanné
               </Text>
             ) : (
               <Pressable
               style={styles.button}
               onPress={() => {
                 setModalVisible(true);
-                setCurrentScan(id);
+                setCurrentScan(item.id);
               }}
             >
               <Text style={styles.text}>
-                {isModalVisible && currentScan === id ? "Scanning..." : `Scan colis ${label}`}
+                {isModalVisible && currentScan === id ? "Scanning..." : `Scan colis ${item.id}`}
               </Text>
             </Pressable>
             )
@@ -72,10 +69,10 @@ export default function Home(props) {
       <View style={[{ width: "50%", marginLeft: 90 }]}>
         <Button
           id="valider"
-          disabled={!(scannedItems.length === colis.length)}
+          disabled={!(scannedItems.length === data.length)}
           title="Validez liste colis"
           onPress={() =>{ 
-            props.navigation.navigate("Information");
+            props.navigation.navigate("Information", {infoId: id});
             //setScannedItems([]); //à activer pour renouvéler le state si toute l'action sont faite.
           }}
         />

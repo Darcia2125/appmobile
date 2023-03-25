@@ -4,7 +4,9 @@ import { View, Text, StyleSheet, TouchableOpacity, ToastAndroid, Button, Image }
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from "expo-media-library";
 
-export default function Course(props) {
+export default function Course(props ) {
+  const { courseId } = props.route.params;
+  
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
   const  [permissionResponse, requestPermission] =  MediaLibrary.usePermissions();
@@ -60,7 +62,7 @@ export default function Course(props) {
         </View>
 
         <View style={styles.infoContainer}>
-            <Text style={styles.name}>Colis 1</Text>
+            <Text style={styles.name}>Colis N°: {courseId}</Text>
             <View style={[{ margin: 30 }]}>
               <View style={[{ marginBottom: 10 }]}>
                 <Button
@@ -86,9 +88,9 @@ export default function Course(props) {
             <View style={[{ width: "50%", marginLeft: 90 }]}>
             <Button
                 mode="contained"
-                title="Validez fin Course 1"
+                title={`Validez fin Course pour le colis N°: ${courseId}`}
                 onPress={() => {
-                  props.navigation.navigate("Colis");
+                  props.navigation.navigate("Colis", { livrerId: courseId});
                   setImagePick([]);
                 }}
                 disabled={!(imagePick[0] === 1 && imagePick[1] === 1)} 
