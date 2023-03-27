@@ -1,56 +1,68 @@
 import React, { useState, useEffect } from "react";
-import { StatusBar } from 'expo-status-bar';
-import { View, Text, StyleSheet, TouchableOpacity, Button, Linking, ToastAndroid } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { StatusBar } from "expo-status-bar";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Button,
+  Linking,
+  ToastAndroid,
+} from "react-native";
+import { BarCodeScanner } from "expo-barcode-scanner";
 import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 
 export default function Scanner(props) {
   const [hasPermission, setHasPermission] = useState(null);
   //const [permission, requestPermission] = Camera.useCameraPermissions();
-  const  [permissionResponse, requestPermission] =  MediaLibrary.usePermissions();
-  const [camera, setCamera] =useState(null);
+  const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
+  const [camera, setCamera] = useState(null);
   const [scanned, setScanned] = useState(false);
-
 
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
+      setHasPermission(status === "granted");
     })();
   }, []);
 
-  if(permissionResponse === null){
+  if (permissionResponse === null) {
     requestPermission();
   }
 
   const takePicture = async () => {
-    if(camera){
+    if (camera) {
       const data = await camera.takePictureAsync();
       await MediaLibrary.saveToLibraryAsync(data.uri);
       if (data.uri) {
-       ToastAndroid.show(
+        ToastAndroid.show(
           `Image télecharger dans la galérie.`,
           ToastAndroid.SHORT
-       );
-       props.handleScan(props.idColis);
-    }
+        );
+        props.handleScan(props.idColis);
+      }
       props.closeModal();
     }
-  }
+  };
 
   const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
-    console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
-    ToastAndroid.show("Produit scanné et va être ensuite photographié, veuillez vous positionner et la photo se fera apres 3s", ToastAndroid.LONG);
+    console.log(
+      `Bar code with type ${type} and data ${data} has been scanned!`
+    );
+    ToastAndroid.show(
+      "Produit scanné et va être ensuite photographié, veuillez vous positionner et la photo se fera apres 3s",
+      ToastAndroid.LONG
+    );
     setTimeout(() => {
-     takePicture();
-    }, 4000)
+      takePicture();
+    }, 4000);
   };
 
   const handleCancelScan = () => {
     props.closeModal();
-  }
+  };
 
   if (hasPermission === null) {
     return <Text>Requesting for camera permission</Text>;
@@ -60,31 +72,35 @@ export default function Scanner(props) {
   }
 
   return (
-      <View style={styles.container}>
-          {/*<BarCodeScanner
+    <View style={styles.container}>
+      {/*<BarCodeScanner
             onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
             style={StyleSheet.absoluteFillObject}
     />*/}
-          <Camera ref={ref => setCamera(ref)} 
-            barCodeScannerSettings={{
-              barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr]
-            }}
-            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-            style={[StyleSheet.absoluteFillObject, {flex: 1, aspectRatio: 1}]} type={CameraType.back} ratio={'1:1'} />
-        <View style={styles.cancelButtonContainer}>
-          <Button
-              id="annuler"
-              title="Annuler le scan"
-              onPress={handleCancelScan}
-            />
-        </View>
+      <Camera
+        ref={(ref) => setCamera(ref)}
+        barCodeScannerSettings={{
+          barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
+        }}
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={[StyleSheet.absoluteFillObject, { flex: 1, aspectRatio: 1 }]}
+        type={CameraType.back}
+        ratio={"1:1"}
+      />
+      <View style={styles.cancelButtonContainer}>
+        <Button
+          id="annuler"
+          title="Annuler le scan"
+          onPress={handleCancelScan}
+        />
       </View>
-  )
+    </View>
+  );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E8EAED',
+    backgroundColor: "#E8EAED",
   },
   tracking: {
     paddingTop: 80,
@@ -92,41 +108,40 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: 'blue',
+    fontWeight: "bold",
+    color: "blue",
     marginTop: -42,
   },
   item: {
     marginTop: 30,
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     padding: 15,
     borderRadius: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 20,
   },
   itemLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-
+    flexDirection: "row",
+    alignItems: "center",
+    flexWrap: "wrap",
   },
   square: {
     width: 24,
     height: 24,
-    backgroundColor: '#55BCF6',
+    backgroundColor: "#55BCF6",
     opacity: 0.4,
     borderRadius: 5,
     marginRight: 15,
   },
   itemText: {
-    maxWidth: '80%',
+    maxWidth: "80%",
   },
   circular: {
     width: 12,
     height: 12,
-    borderColor: '#55BCF6',
+    borderColor: "#55BCF6",
     borderWidth: 2,
     borderRadius: 5,
   },

@@ -9,9 +9,8 @@ import {
   TouchableOpacity,
   Modal,
 } from "react-native";
-import login  from "../services/ApiLogin";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CompteContext } from '../utils/contexte/CompteContext';
+import login from "../services/ApiLogin";
+import { CompteContext } from "../utils/contexte/CompteContext";
 
 export default function Login(props) {
   const [matricule, setMatricule] = useState("");
@@ -19,25 +18,24 @@ export default function Login(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const {setIsLogged} = useContext(CompteContext);
+  const { setIsLogged } = useContext(CompteContext);
 
   const handleLogin = async () => {
     setIsLoading(true);
-    login(matricule, password).then((response) => {
-        AsyncStorage.setItem("token" , response.data.token)
-        setIsLoading(false)
+    login(matricule, password)
+      .then((response) => {
+        setIsLoading(false);
         setIsLogged(true);
-        //props.navigation.navigate("Accueil")
         setTimeout(() => {
           props.navigation.navigate("Accueil");
-        }, 500)
-    }).catch((err) => {
-      console.log(err)
-      setIsLoading(false)
-      setErrorMessage(err.response.data.message)
-      setIsModalVisible(true);
-    } )
-
+        }, 500);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+        setErrorMessage(err);
+        setIsModalVisible(true);
+      });
   };
 
   return (
@@ -83,126 +81,126 @@ export default function Login(props) {
         />
       </View>
       {errorMessage ? (
-          <View style={styles.alertView}>
-            <Text style={styles.alertText}>{errorMessage}</Text>
-          </View>
-        ) : null}
+        <View style={styles.alertView}>
+          <Text style={styles.alertText}>{errorMessage}</Text>
+        </View>
+      ) : null}
       {isLoading ? (
-          <Text style={styles.loading}>Chargement...</Text>
-        ) : (
-          <TouchableOpacity style={styles.loginBtn} onPress={handleLogin}>
-            <Text style={styles.loginText}>Se connecter</Text>
+        <Text style={styles.loading}>Chargement...</Text>
+      ) : (
+        <TouchableOpacity style={styles.loginBtn} onPress={handleLogin}>
+          <Text style={styles.loginText}>Se connecter</Text>
+        </TouchableOpacity>
+      )}
+      <Modal visible={isModalVisible}>
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>Erreur</Text>
+          <Text style={styles.modalText}>{errorMessage}</Text>
+          <TouchableOpacity
+            style={styles.modalButton}
+            onPress={() => setIsModalVisible(false)}
+          >
+            <Text style={styles.modalButtonText}>OK</Text>
           </TouchableOpacity>
-        )}
-        <Modal visible={isModalVisible}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Erreur</Text>
-            <Text style={styles.modalText}>{errorMessage}</Text>
-            <TouchableOpacity
-              style={styles.modalButton}
-              onPress={() => setIsModalVisible(false)}
-            >
-              <Text style={styles.modalButtonText}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
+        </View>
+      </Modal>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-        container: {
-          flex: 1,
-          backgroundColor: "#fff",
-          alignItems: "center",
-          justifyContent: "center",
-        },
-        inputView: {
-          backgroundColor: "blue",
-          borderRadius: 30,
-          width: "50%",
-          height: 45,
-          marginBottom: -62,
-          marginTop: 8,
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  inputView: {
+    backgroundColor: "blue",
+    borderRadius: 30,
+    width: "50%",
+    height: 45,
+    marginBottom: -62,
+    marginTop: 8,
 
-          alignItems: "center",
-        },
-        TextInput: {
-          height: 50,
-          flex: 1,
-          padding: 10,
-          marginLeft: 20,
-          color: "white",
-        },
-      View2: {
-        backgroundColor: "blue",
-        borderRadius: 30,
-        width: "50%",
-        height: 45,
-        marginBottom: -402,
-        marginTop:102,
-    
-        alignItems: "center",
-      },
-    Input2: {
-        height: 50,
-        flex: 1,
-        padding: 10,
-        marginLeft: 20,
-        color: "white",
-      },
-    loginText: {
-        color: "blue",
-        fontWeight: "bold",
-      },
-    loginBtn: {
-        width: "80%",
-        borderRadius: 25,
-        height: 50,
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: 475,
-        marginBottom: -502,
-        backgroundColor: "yellow",
-      },
-      alertView: {
-        backgroundColor: 'red',
-        padding: 10,
-        borderRadius: 5,
-        marginVertical: 10,
-        width: '80%',
-        alignItems: 'center',
-      },
-      alertText: {
-        color: 'white',
-        fontWeight: 'bold',
-      },
-      modalContainer: {
-        backgroundColor: "#fff",
-        borderRadius: 10,
-        padding: 20,
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: "40%",
-        marginHorizontal: 20,
-      },
-      modalTitle: {
-        fontSize: 20,
-        fontWeight: "bold",
-        marginBottom: 10,
-      },
-      modalText: {
-        fontSize: 16,
-        marginBottom: 20,
-      },
-      modalButton: {
-        backgroundColor: "blue",
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 5,
-      },
-      modalButtonText: {
-        color: "#fff",
-        fontSize: 16,
-      },
+    alignItems: "center",
+  },
+  TextInput: {
+    height: 50,
+    flex: 1,
+    padding: 10,
+    marginLeft: 20,
+    color: "white",
+  },
+  View2: {
+    backgroundColor: "blue",
+    borderRadius: 30,
+    width: "50%",
+    height: 45,
+    marginBottom: -402,
+    marginTop: 102,
+
+    alignItems: "center",
+  },
+  Input2: {
+    height: 50,
+    flex: 1,
+    padding: 10,
+    marginLeft: 20,
+    color: "white",
+  },
+  loginText: {
+    color: "blue",
+    fontWeight: "bold",
+  },
+  loginBtn: {
+    width: "80%",
+    borderRadius: 25,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 475,
+    marginBottom: -502,
+    backgroundColor: "yellow",
+  },
+  alertView: {
+    backgroundColor: "red",
+    padding: 10,
+    borderRadius: 5,
+    marginVertical: 10,
+    width: "80%",
+    alignItems: "center",
+  },
+  alertText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  modalContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: "40%",
+    marginHorizontal: 20,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 20,
+  },
+  modalButton: {
+    backgroundColor: "blue",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  modalButtonText: {
+    color: "#fff",
+    fontSize: 16,
+  },
 });
