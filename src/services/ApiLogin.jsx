@@ -8,9 +8,7 @@ const login = async (matricule, password) => {
     password: password,
   })
     .then((response) => {
-      // On récupère le token
       const token = response.data.token;
-      // On stocke le token dans le AsyncStorage
       AsyncStorage.setItem("token", token);
       return true;
     })

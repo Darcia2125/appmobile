@@ -1628,9 +1628,9 @@
     rimraf "^3.0.2"
 
 "@react-native-async-storage/async-storage@^1.17.12":
-  version "1.17.12"
-  resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.17.12.tgz#a39e4df5b06795ce49b2ca5b7ca9b8faadf8e621"
-  integrity sha512-BXg4OxFdjPTRt+8MvN6jz4muq0/2zII3s7HeT/11e4Zeh3WCgk/BleLzUcDfVqF3OzFHUqEkSrb76d6Ndjd/Nw==
+  version "1.18.0"
+  resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.18.0.tgz#0cc05bcf715c7ab9edd5783bbe04b5e755ed30b1"
+  integrity sha512-E1KYIXlJTm4NUw1bRPdYueRdp8e//7pLb2i8JY+YIYSOxFi0usycFDXkkGgPqvfn7nW6o2G2TZvXUYpBVHenWA==
   dependencies:
     merge-options "^3.0.4"
 
@@ -2000,9 +2000,9 @@
   integrity sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==
 
 "@types/node@*":
-  version "18.15.5"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.15.5.tgz#3af577099a99c61479149b716183e70b5239324a"
-  integrity sha512-Ark2WDjjZO7GmvsyFFf81MXuGTA/d6oP38anyxWOL6EREyBKAxKoFHwBhaZxCfLRLpO8JgVXwqOwSwa7jRcjew==
+  version "18.15.10"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.15.10.tgz#4ee2171c3306a185d1208dad5f44dae3dee4cfe3"
+  integrity sha512-9avDaQJczATcXgfmMAW3MIWArOO7A+m90vuCFLr8AotWf8igO/mRoYukrk2cqZVtv38tHs33retzHEilM7FpeQ==
 
 "@types/prop-types@*":
   version "15.7.5"
@@ -2015,9 +2015,9 @@
   integrity sha512-L28j2FcJfSZOnL1WBjDYp2vUHCeIFlyYI/53EwD/rKUBQ7MtUUfbQWiyKJGpcnv4/WgrhWsFKrcPstcAt/J0tQ==
 
 "@types/react@*":
-  version "18.0.28"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.28.tgz#accaeb8b86f4908057ad629a26635fe641480065"
-  integrity sha512-RD0ivG1kEztNBdoAK7lekI9M+azSnitIn85h4iOiaLjaTrMjzslhaqCGaI4IyCJ1RljWiLCEu4jyrLLgqxBTew==
+  version "18.0.29"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.29.tgz#4cead505172c0020c5b51940199e31fc6ff2f63a"
+  integrity sha512-wXHktgUABxplw1+UnljseDq4+uztQyp2tlWZRIxHlpchsCFqiYkvaDS8JR7eKOQm8wziTH/el5qL7D6gYNkYcw==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -3207,9 +3207,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001125, caniuse-lite@^1.0.30001449:
-  version "1.0.30001469"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001469.tgz#3dd505430c8522fdc9f94b4a19518e330f5c945a"
-  integrity sha512-Rcp7221ScNqQPP3W+lVOYDyjdR6dC+neEQCttoNr5bAyz54AboB4iwpnWgyi8P4YUsPybVzT4LgWiBbI3drL4g==
+  version "1.0.30001470"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001470.tgz#09c8e87c711f75ff5d39804db2613dd593feeb10"
+  integrity sha512-065uNwY6QtHCBOExzbV6m236DDhYCCtPmQUCoQtwkVqzud8v5QPidoMr6CoMkC2nfp6nksjttqWQRRh75LqUmA==
 
 chalk@2.4.2, chalk@^2.0.0, chalk@^2.0.1, chalk@^2.4.1, chalk@^2.4.2:
   version "2.4.2"
@@ -4314,9 +4314,9 @@ ee-first@1.1.1:
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
 electron-to-chromium@^1.3.564, electron-to-chromium@^1.4.284:
-  version "1.4.337"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.337.tgz#710168240b2dc5fe5eb5f8e4ef9c16d70aedc0ba"
-  integrity sha512-W8gdzXG86mVPoc56eM8YA+QiLxaAxJ8cmDjxZgfhLLWVvZQxyA918w5tX2JEWApZta45T1/sYcmFHTsTOUE3nw==
+  version "1.4.340"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.340.tgz#3a6d7414c1fc2dbf84b6f7af3ec24270606c85b8"
+  integrity sha512-zx8hqumOqltKsv/MF50yvdAlPF9S/4PXbyfzJS6ZGhbddGkRegdwImmfSVqCkEziYzrIGZ/TlrzBND4FysfkDg==
 
 elliptic@^6.5.3:
   version "6.5.4"
@@ -5042,9 +5042,9 @@ find-yarn-workspace-root@~2.0.0:
     micromatch "^4.0.2"
 
 flow-parser@0.*:
-  version "0.202.0"
-  resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.202.0.tgz#534178266d3ceec5368415e59990db97eece5bd0"
-  integrity sha512-ZiXxSIXK3zPmY3zrzCofFonM2T+/3Jz5QZKJyPVtUERQEJUnYkXBQ+0H3FzyqiyJs+VXqb/UNU6/K6sziVYdxw==
+  version "0.202.1"
+  resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.202.1.tgz#3f87222e6910f6790bb2ce4648c20e1b87d6f9d7"
+  integrity sha512-IA8mhyNEUtzAKh+lj1yNDLFiUr1NSwPC+exQgghQNARFU/DeWGpoNmuYYzMDFIYsOdVdDoTJTxRc+/cS9CVvNg==
 
 flow-parser@^0.121.0:
   version "0.121.0"
@@ -7378,9 +7378,9 @@ nan@^2.12.1:
   integrity sha512-2ZTgtl0nJsO0KQCjEpxcIr5D+Yv90plTitZt9JBfQvVJDS5seMl3FOvsh3+9CoYWXf/1l5OaZzzF6nDm4cagaQ==
 
 nanoid@^3.1.23:
-  version "3.3.4"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.4.tgz#730b67e3cd09e2deacf03c027c81c9d9dbc5e8ab"
-  integrity sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.6.tgz#443380c856d6e9f9824267d960b4236ad583ea4c"
+  integrity sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==
 
 nanomatch@^1.2.9:
   version "1.2.13"
@@ -8848,9 +8848,9 @@ react-native-modal@^13.0.1:
     react-native-animatable "1.3.3"
 
 react-native-paper@^5.2.0:
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.5.0.tgz#a3bf21cd5833917f0e9226b1e91189c169bad907"
-  integrity sha512-vzT4LLi0SIYm8fvG/n5ikXp7YqkHw/86DAYhBYbfFNxtktmYRjmq9p2HeEKWbXh+/c9n+R8IWiXhPZjXtIRWQA==
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.5.1.tgz#21ffd0f83f3dc8761f4a836f5e99b5ebeebc7838"
+  integrity sha512-IEk7fJwQp5+8sY8+zPTie2wbKrS72vOyFCJdatjoYGuiz55BiTn8JJanqKIu0IQFKZjiGAZPlzM44cCWrEkTPw==
   dependencies:
     "@callstack/react-theme-provider" "^3.0.8"
     color "^3.1.2"
@@ -9605,9 +9605,9 @@ slice-ansi@^2.0.0:
     is-fullwidth-code-point "^2.0.0"
 
 slugify@^1.3.4:
-  version "1.6.5"
-  resolved "https://registry.yarnpkg.com/slugify/-/slugify-1.6.5.tgz#c8f5c072bf2135b80703589b39a3d41451fbe8c8"
-  integrity sha512-8mo9bslnBO3tr5PEVFzMPIWwWnipGS0xVbYf65zxDqfNwmzYn1LpiKNrR6DlClusuvo+hDHd1zKpmfAe83NQSQ==
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/slugify/-/slugify-1.6.6.tgz#2d4ac0eacb47add6af9e04d3be79319cbcc7924b"
+  integrity sha512-h+z7HKHYXj6wJU+AnS/+IH8Uh9fdcX1Lrhg1/VMdf9PwoBQXFcXiAdsy2tSK0P6gKwJLXp02r90ahUCqHk9rrw==
 
 snapdragon-node@^2.0.1:
   version "2.1.1"
@@ -9967,9 +9967,9 @@ styleq@^0.1.2:
   integrity sha512-3ZUifmCDCQanjeej1f6kyl/BeP/Vae5EYkQ9iJfUm/QwZvlgnZzyflqAsAWYURdtea8Vkvswu2GrC57h3qffcA==
 
 sucrase@^3.20.0:
-  version "3.30.0"
-  resolved "https://registry.yarnpkg.com/sucrase/-/sucrase-3.30.0.tgz#ce8f49152913c70945d65d9e5405d66a399cca8a"
-  integrity sha512-7d37d3vLF0IeH2dzvHpzDNDxUqpbDHJXTJOAnQ8jvMW04o2Czps6mxtaSnKWpE+hUS/eczqfWPUgQTrazKZPnQ==
+  version "3.31.0"
+  resolved "https://registry.yarnpkg.com/sucrase/-/sucrase-3.31.0.tgz#daae4fd458167c5d4ba1cce6aef57b988b417b33"
+  integrity sha512-6QsHnkqyVEzYcaiHsOKkzOtOgdJcb8i54x6AV2hDwyZcY9ZyykGZVw6L/YN98xC0evwTP6utsWWrKRaa8QlfEQ==
   dependencies:
     commander "^4.0.0"
     glob "7.1.6"
@@ -10894,9 +10894,9 @@ wonka@^4.0.14:
   integrity sha512-U0IUQHKXXn6PFo9nqsHphVCE5m3IntqZNB9Jjn7EB1lrR7YTDY3YWgFvEvwniTzXSvOH/XMzAZaIfJF/LvHYXg==
 
 wonka@^6.1.2:
-  version "6.2.5"
-  resolved "https://registry.yarnpkg.com/wonka/-/wonka-6.2.5.tgz#26e54a6827b96a6164b845106f4d925ede4089bb"
-  integrity sha512-adhGYKm5xWIZYXRkzEqHbRbRl2gXHqOudjQJMXpRgSyboFmaKOjGm3RIThBk4tZdiZx1DXuKK0H9wKBgXHhzZg==
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/wonka/-/wonka-6.3.0.tgz#dd508dc9ef8588e5bbb10b96f2388bd9d4a1f17b"
+  integrity sha512-7np+Kj4OnDQeEN0kafYLkPFKj1Qo+k7mNgyMHSgOeg+9AEvJbL8ipTBgSCTQfGcgVo6TPNU4T5+AZ2rAOyVrAw==
 
 worker-farm@^1.7.0:
   version "1.7.0"

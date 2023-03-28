@@ -1,21 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { StatusBar } from "expo-status-bar";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Button,
-  Linking,
-  ToastAndroid,
-} from "react-native";
-import { BarCodeScanner } from "expo-barcode-scanner";
 import { Camera, CameraType } from "expo-camera";
+import React, { useState, useEffect } from "react";
 import * as MediaLibrary from "expo-media-library";
+import { BarCodeScanner } from "expo-barcode-scanner";
+import { View, Text, StyleSheet, Button, ToastAndroid } from "react-native";
+
+import { verifiedQrCode, updateColis } from "../services/ApiColis";
 
 export default function Scanner(props) {
   const [hasPermission, setHasPermission] = useState(null);
-  //const [permission, requestPermission] = Camera.useCameraPermissions();
   const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
   const [camera, setCamera] = useState(null);
   const [scanned, setScanned] = useState(false);
@@ -33,8 +25,8 @@ export default function Scanner(props) {
 
   const takePicture = async () => {
     if (camera) {
-      const data = await camera.takePictureAsync();
       await MediaLibrary.saveToLibraryAsync(data.uri);
+      const data = await camera.takePictureAsync();
       if (data.uri) {
         ToastAndroid.show(
           `Image télecharger dans la galérie.`,
@@ -48,16 +40,47 @@ export default function Scanner(props) {
 
   const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
-    console.log(
-      `Bar code with type ${type} and data ${data} has been scanned!`
-    );
-    ToastAndroid.show(
-      "Produit scanné et va être ensuite photographié, veuillez vous positionner et la photo se fera apres 3s",
-      ToastAndroid.LONG
-    );
-    setTimeout(() => {
-      takePicture();
-    }, 4000);
+
+    if (parseInt(data.split("_")[0]) !== props.idColis) {
+      ToastAndroid.show(
+        "Code Qr et information du colis ne correspondent pas",
+        ToastAndroid.LONG
+      );
+      setScanned(false);
+      return;
+    }
+
+    await verifiedQrCode(data).then((res) => {
+      if (res) {
+        ToastAndroid.show(
+          "Le code scanné est valide, veuillez patienter",
+          ToastAndroid.LONG
+        );
+
+        // setTimeout(() => {
+        //   takePicture();
+        // }, 4000);
+
+        updateColis(props.idColis, { valide_qr: "Y" })
+          .then((res) => {
+            props.handleScan(props.idColis);
+            props.closeModal();
+          })
+          .catch((err) => {
+            ToastAndroid.show(
+              "Erreur lors de la mise à jour du colis",
+              ToastAndroid.LONG
+            );
+          });
+        setScanned(false);
+      } else {
+        ToastAndroid.show(
+          "Colis n'existe pas ou déjà scanné",
+          ToastAndroid.LONG
+        );
+        setScanned(false);
+      }
+    });
   };
 
   const handleCancelScan = () => {
@@ -73,10 +96,6 @@ export default function Scanner(props) {
 
   return (
     <View style={styles.container}>
-      {/*<BarCodeScanner
-            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-            style={StyleSheet.absoluteFillObject}
-    />*/}
       <Camera
         ref={(ref) => setCamera(ref)}
         barCodeScannerSettings={{

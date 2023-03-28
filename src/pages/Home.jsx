@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import { View, Text, StyleSheet, Button, Pressable } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import Modal from "react-native-modal";
 import Scanner from "./Scanner";
-import * as Progress from "react-native-progress";
 
 // Import Hook pour récupérer les colis
 import { useFetchColis } from "../services/hooks/use_fetch_colis";
@@ -12,7 +11,6 @@ export default function Home(props) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [currentScan, setCurrentScan] = useState(null);
   const [scannedItems, setScannedItems] = useState([]);
-  const [scannedItemIds, setScannedItemIds] = useState([]);
   const [data, setData] = useState([]);
 
   // Hook pour récupérer les colis
@@ -26,6 +24,7 @@ export default function Home(props) {
 
   function handleScan(itemId) {
     // Ajouter l'ID de l'article scanné à l'ensemble des articles scannés
+    // si le colis scanné est valide
     let copyColisScanned = [...scannedItems];
     if (copyColisScanned.includes(itemId)) {
       return;
@@ -34,12 +33,24 @@ export default function Home(props) {
     }
     return setScannedItems(copyColisScanned);
   }
-
   return (
-    <View style={styles.container}>
-      <View style={styles.tracking}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#fff",
+        alignItems: "center",
+      }}
+    >
+      <View
+        style={{
+          width: "100%",
+          height: "100%",
+          paddingTop: 80,
+          paddingHorizontal: 20,
+        }}
+      >
         <Text style={styles.title}>Liste de livraison à faire</Text>
-        {!isLoadingColis && data.length ? (
+        {!isLoadingColis ? (
           data.length > 0 ? (
             data.map((item) => (
               <View key={item.id} style={styles.item}>
@@ -56,7 +67,7 @@ export default function Home(props) {
                       scannedItems.includes(item.id) && styles.itemTextBold,
                     ]}
                   >
-                    colis: {item.num_colis}
+                    colis: {item.num_commande}
                   </Text>
                 </View>
                 {scannedItems.includes(item.id) ? (
@@ -70,7 +81,7 @@ export default function Home(props) {
                     }}
                   >
                     <Text style={styles.text}>
-                      {isModalVisible && currentScan === id
+                      {isModalVisible && currentScan === item.id
                         ? "Scanning..."
                         : `Scan colis ${item.id}`}
                     </Text>
@@ -79,19 +90,39 @@ export default function Home(props) {
               </View>
             ))
           ) : (
-            <Text style={styles.text}>Aucun colis à livrer</Text>
+            <>
+              <View
+                style={{
+                  marginTop: 70,
+
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Image
+                  style={{ width: 200, height: 200 }}
+                  source={{
+                    uri: "https://sesame.iteam-s.mg/static/media/nodata.65fa7a4e1e624a5e97a4.png",
+                  }}
+                />
+              </View>
+
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                  Aucun colis à livrer
+                </Text>
+              </View>
+            </>
           )
         ) : (
-          <Progress.Circle
-            style={{
-              marginTop: 100,
-              marginLeft: 100,
-            }}
-            size={30}
-            indeterminate={true}
-          />
+          <Text style={styles.text}>Chargement...</Text>
         )}
-        <Modal isVisible={isModalVisible}>
+        <Modal isVisible={isModalVisible} size="lg">
           <View style={{ flex: 1 }}>
             <Scanner
               closeModal={() => setModalVisible(false)}
@@ -101,17 +132,17 @@ export default function Home(props) {
           </View>
         </Modal>
       </View>
-      <View style={[{ width: "50%", marginLeft: 90 }]}>
+      {/* <View style={[{ width: "50%", marginLeft: 90 }]}>
         <Button
           id="valider"
           disabled={!(scannedItems.length === data.length)}
           title="Validez liste colis"
           onPress={() => {
-            props.navigation.navigate("Information", { infoId: id });
+            props.navigation.navigate("Information", { infoId: scannedItems });
             //setScannedItems([]); //à activer pour renouvéler le state si toute l'action sont faite.
           }}
         />
-      </View>
+      </View> */}
     </View>
   );
 }
@@ -132,8 +163,8 @@ const styles = StyleSheet.create({
     backgroundColor: "green",
     width: 120,
     borderRadius: 4,
-    fontSize: 16,
-    lineHeight: 21,
+    fontSize: 12,
+    lineHeight: 44,
     fontWeight: "bold",
     letterSpacing: 0.25,
     color: "white",

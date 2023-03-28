@@ -1,6 +1,6 @@
 import { RouteAxios } from "../url";
 import { useState, useEffect } from "react";
-import { AsyncStorage } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function useFetchColis() {
   const [dataColis, setDataColis] = useState();
