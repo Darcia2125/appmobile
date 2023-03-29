@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable, Button } from "react-native";
 import Modal from "react-native-modal";
 import Scanner from "./Scanner";
 
@@ -45,12 +45,20 @@ export default function Home(props) {
         style={{
           width: "100%",
           height: "100%",
-          paddingTop: 80,
-          paddingHorizontal: 20,
+          paddingTop: 40,
         }}
       >
-        <Text style={styles.title}>Liste de livraison à faire</Text>
-        {!isLoadingColis ? (
+        <View
+          style={{
+            alignContent: "center",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={styles.title}>Liste de livraison à faire</Text>
+        </View>
+
+        {!isLoadingColis && data ? (
           data.length > 0 ? (
             data.map((item) => (
               <View key={item.id} style={styles.item}>
@@ -132,17 +140,31 @@ export default function Home(props) {
           </View>
         </Modal>
       </View>
-      {/* <View style={[{ width: "50%", marginLeft: 90 }]}>
-        <Button
-          id="valider"
-          disabled={!(scannedItems.length === data.length)}
-          title="Validez liste colis"
-          onPress={() => {
-            props.navigation.navigate("Information", { infoId: scannedItems });
-            //setScannedItems([]); //à activer pour renouvéler le state si toute l'action sont faite.
+      {data.length > 0 && (
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            width: "50%",
+            height: 50,
+            borderRadius: 50,
           }}
-        />
-      </View> */}
+        >
+          <Button
+            style={{
+              color: "primary",
+            }}
+            id="valider"
+            disabled={!(scannedItems.length === data.length)}
+            title="Validez liste colis"
+            onPress={() => {
+              setScannedItems([]); // pour renouvéler le state si toute l'action sont faite.
+              setData([]);
+              props.navigation.navigate("Information");
+            }}
+          />
+        </View>
+      )}
     </View>
   );
 }
@@ -185,20 +207,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   title: {
+    alignItems: "center",
+    justifyContent: "center",
     fontSize: 24,
     fontWeight: "bold",
     color: "blue",
     marginTop: -42,
+    marginBottom: 20,
   },
   item: {
-    marginTop: 30,
     backgroundColor: "#F0F0F2",
     padding: 15,
     borderRadius: 10,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 20,
+    margin: 10,
   },
   itemLeft: {
     flexDirection: "row",

@@ -39,7 +39,7 @@ export default function Information(props) {
     if (!isLoadingColisValidated && dataColisValidated) {
       setData(dataColisValidated);
     }
-  }, [dataColisValidated, dataColisValidated]);
+  }, [isLoadingColisValidated, dataColisValidated]);
 
   const handleClick = () => {
     setModalVisible(true);
@@ -114,7 +114,7 @@ export default function Information(props) {
           </DataTable.Title>
         </DataTable.Header>
 
-        {!isLoadingColisValidated ? (
+        {!isLoadingColisValidated && data ? (
           data.length > 0 ? (
             data.map((item) => (
               <DataTable.Row
@@ -261,7 +261,7 @@ export default function Information(props) {
           label={`${from + 1}`}
         />
       </DataTable>
-      {data.length > 0 && (
+      {data.length > 0 && selectedCheckboxId && (
         <View style={[{ width: "50%", marginLeft: 90, marginTop: 20 }]}>
           <Button
             title={`Validez votre course pour le colis ${selectedCheckboxId}`}

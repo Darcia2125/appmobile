@@ -62,7 +62,7 @@ function HomeStack() {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Colis"
         component={Colis}
         options={{
@@ -70,7 +70,7 @@ function HomeStack() {
             <Ionicons name="cube-outline" color={color} size={size} />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Messages"
         component={Message}

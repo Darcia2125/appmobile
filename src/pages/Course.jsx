@@ -1,16 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { StatusBar } from "expo-status-bar";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ToastAndroid,
-  Button,
-  Image,
-} from "react-native";
 import { Camera } from "expo-camera";
+import React, { useState, useEffect } from "react";
 import * as MediaLibrary from "expo-media-library";
+import { updateColis } from "../services/ApiColis";
+import { View, Text, StyleSheet, ToastAndroid, Button } from "react-native";
 
 export default function Course(props) {
   const { courseId } = props.route.params;
@@ -96,7 +88,21 @@ export default function Course(props) {
             mode="contained"
             title={`Validez fin Course pour le colis N°: ${courseId}`}
             onPress={() => {
-              props.navigation.navigate("Colis", { livrerId: courseId });
+              updateColis(courseId, {
+                status: "C",
+              })
+                .then(() => {
+                  ToastAndroid.show(
+                    `Colis N°: ${courseId} est bien livré.`,
+                    ToastAndroid.SHORT
+                  );
+                })
+                .catch((err) => {
+                  ToastAndroid.show(
+                    `Erreur: ${err.response.data.error}`,
+                    ToastAndroid.SHORT
+                  );
+                });
               setImagePick([]);
             }}
             disabled={!(imagePick[0] === 1 && imagePick[1] === 1)}

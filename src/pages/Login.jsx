@@ -24,14 +24,15 @@ export default function Login(props) {
     setIsLoading(true);
     login(matricule, password)
       .then((response) => {
-        setIsLoading(false);
-        setIsLogged(true);
-        setTimeout(() => {
-          props.navigation.navigate("Accueil");
-        }, 500);
+        if (response === true) {
+          setIsLogged(true);
+        } else {
+          setIsLoading(false);
+          setErrorMessage(response);
+          setIsModalVisible(true);
+        }
       })
       .catch((err) => {
-        console.log(err);
         setIsLoading(false);
         setErrorMessage(err);
         setIsModalVisible(true);
